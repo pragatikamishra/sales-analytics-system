@@ -27,7 +27,6 @@ a=read_sales_data('sales_data.txt','utf-')
 
 
 def parse_transactions(raw_lines):
-  
     transactions = []
     for line in raw_lines:
         fields = line.split('|')
@@ -65,7 +64,6 @@ data=parse_transactions(a)
 
 
 def validate_and_filter(transactions, region=None, min_amount=None, max_amount=None):
- 
     valid_transactions = []
     invalid_count = 0
 
@@ -114,6 +112,3 @@ def validate_and_filter(transactions, region=None, min_amount=None, max_amount=N
     }
 
     return valid_transactions, invalid_count, filter_summary
-
-
-
