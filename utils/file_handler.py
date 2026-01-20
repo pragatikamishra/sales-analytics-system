@@ -61,43 +61,51 @@ def parse_transactions(raw_lines):
 
 # VALIDATE & FILTER
 
+
 def validate_and_filter(transactions, region=None, min_amount=None, max_amount=None):
     valid = []
     invalid_count = 0
 
+    #validation
     for tx in transactions:
         if (
-            tx["Quantity"] <= 0
-            or tx["UnitPrice"] <= 0
-            or not tx["TransactionID"].startswith("T")
-            or not tx["ProductID"].startswith("P")
-            or not tx["CustomerID"].startswith("C")
-        ):
+            tx["Quantity"] <= 0 or tx["UnitPrice"] <= 0 or
+            not tx["TransactionID"].startswith("T") or
+            not tx["ProductID"].startswith("P") or
+            not tx["CustomerID"].startswith("C")):
             invalid_count += 1
             continue
-        valid.append(tx)
+        valid_transactions.append(tx)
 
-    before = len(valid)
+    total_input = len(transactions) 
+    filtered_by_region = 0 
+    filtered_by_amount = 0
 
-    if region:
-        valid = [t for t in valid if t["Region"] == region]
+    # Filter by region 
+    if region: 
+        before_count = len(valid_transactions) 
+        valid_transactions = [tx for tx in valid_transactions 
+        if tx['Region'] == region] 
+        filtered_by_region = before_count - len(valid_transactions)
 
+    # Filter by amount
     if min_amount is not None or max_amount is not None:
-        def amount_ok(t):
-            amt = t["Quantity"] * t["UnitPrice"]
-            if min_amount and amt < min_amount:
+         before_count = len(valid_transactions) 
+         def amount_filter(tx): 
+            amount = tx['Quantity'] * tx['UnitPrice'] 
+            if min_amount is not None and amount < min_amount: 
                 return False
-            if max_amount and amt > max_amount:
-                return False
+            if max_amount is not None and amount > max_amount: 
+                return False 
             return True
+         valid_transactions = [tx for tx in valid_transactions if amount_filter(tx)] 
+         filtered_by_amount = before_count - len(valid_transactions) 
+         final_count = len(valid_transactions)
 
-        valid = [t for t in valid if amount_ok(t)]
-
-    summary = {
-        "total_input": len(transactions),
-        "invalid": invalid_count,
-        "final_count": len(valid),
-        "filtered": before - len(valid),
-    }
-
-    return valid, summary
+         filter_summary = { 
+            'total_input': total_input,
+            'invalid': invalid_count, 
+            'filtered_by_region': filtered_by_region, 
+            'filtered_by_amount': filtered_by_amount, 
+            'final_count': final_count } 
+    return valid_transactions, invalid_count, filter_summary
