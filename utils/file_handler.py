@@ -18,9 +18,9 @@ def read_sales_data(filename,file_encoder):
             header=next(file_content,None) #skip header 
             for row in file_content: 
                 if row and any(field.strip() 
-                               for field in row): 
-                                data.append('|'.join(row))
-                                return data 
+                    for field in row): 
+                     data.append('|'.join(row))
+            return data 
     except UnicodeDecodeError: 
         print(f'{filename} file is not in UTF-8 encoding') 
         return data 
