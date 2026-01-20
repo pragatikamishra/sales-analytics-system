@@ -31,30 +31,32 @@ def read_sales_data(filename,file_encoder):
 
 # PARSE TRANSACTIONS
 
-def parse_transactions(raw_lines):
-    transactions = []
-
-    for line in raw_lines:
-        fields = line.split("|")
-        if len(fields) != 8:
-            continue
-
-        try:
-            transaction = {
-                "TransactionID": fields[0].strip(),
-                "Date": fields[1].strip(),
-                "ProductID": fields[2].strip(),
-                "ProductName": fields[3].replace(",", " ").strip(),
-                "Quantity": int(fields[4].replace(",", "").strip()),
-                "UnitPrice": float(fields[5].replace(",", "").strip()),
-                "CustomerID": fields[6].strip(),
-                "Region": fields[7].strip(),
-            }
-            transactions.append(transaction)
-
-        except ValueError:
-            continue
-
+def parse_transactions(raw_lines): 
+    transactions = [] 
+    for line in raw_lines: 
+         fields = line.split('|') 
+         if len(fields) != 8:
+              continue # Skip rows with incorrect number of fields 
+         transaction_id = fields[0].strip() 
+         date = fields[1].strip() 
+         product_id = fields[2].strip() 
+         product_name = fields[3].replace(',', ' ').strip() # Remove commas in ProductName 
+         try: 
+              quantity = int(fields[4].replace(',', '').strip()) # Remove commas and convert to int 
+              unit_price = float(fields[5].replace(',', '').strip()) # Remove commas and convert to float 
+         except ValueError: 
+              continue # Skip rows with invalid numeric data 
+         customer_id = fields[6].strip() 
+         region = fields[7].strip() 
+         transaction = { 'TransactionID': transaction_id, 
+                        'Date': date, 
+                        'ProductID': product_id, 
+                        'ProductName': product_name, 
+                        'Quantity': quantity, 
+                        'UnitPrice': unit_price, 
+                        'CustomerID': customer_id, 
+                        'Region': region }
+         transactions.append(transaction) 
     return transactions
 
 # VALIDATE & FILTER
