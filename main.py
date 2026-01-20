@@ -1,6 +1,6 @@
 import os
-from file_handler import (read_sales_data, parse_transactions, validate_and_filter)
-from data_processor import (
+from utils.file_handler import (read_sales_data, parse_transactions, validate_and_filter)
+from utils.data_processor import (
     calculate_total_revenue,
     region_wise_sales,
     top_selling_products,
@@ -9,7 +9,7 @@ from data_processor import (
     find_peak_sales_day,
     low_performing_products
 )
-from api_handler import (
+from utils.api_handler import (
     fetch_all_products,
     create_product_mapping,
     enrich_sales_data,
