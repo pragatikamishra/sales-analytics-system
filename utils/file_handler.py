@@ -1,3 +1,4 @@
+import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 OUTPUT_DIR = os.path.join(BASE_DIR, "output")
@@ -5,9 +6,9 @@ OUTPUT_DIR = os.path.join(BASE_DIR, "output")
 os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-# --------------------------------------------------
+
 # READ SALES DATA
-# --------------------------------------------------
+
 def read_sales_data(filename, encoding="utf-8"):
     data = []
     file_path = os.path.join(DATA_DIR, filename)
@@ -31,9 +32,9 @@ def read_sales_data(filename, encoding="utf-8"):
         return []
 
 
-# --------------------------------------------------
+
 # PARSE TRANSACTIONS
-# --------------------------------------------------
+
 def parse_transactions(raw_lines):
     transactions = []
 
@@ -60,10 +61,8 @@ def parse_transactions(raw_lines):
 
     return transactions
 
-
-# --------------------------------------------------
 # VALIDATE & FILTER
-# --------------------------------------------------
+
 def validate_and_filter(transactions, region=None, min_amount=None, max_amount=None):
     valid = []
     invalid_count = 0
