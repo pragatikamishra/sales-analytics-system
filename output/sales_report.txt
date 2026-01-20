@@ -1,0 +1,62 @@
+============================================
+       SALES ANALYTICS REPORT
+     Generated: 2026-01-20 18:24:19
+     Records Processed: 6
+============================================
+
+OVERALL SUMMARY
+--------------------------------------------
+Total Revenue:        ₹74,343.00
+Total Transactions:   6
+Average Order Value:  ₹12,390.50
+Date Range:           2024-12-03 to 2024-12-14
+
+REGION-WISE PERFORMANCE
+--------------------------------------------
+Region    Sales          % of Total  Transactions
+East      ₹    74,343.00    100.00%     6
+
+TOP 5 PRODUCTS
+--------------------------------------------
+Rank Product                  Qty Sold  Revenue
+1    Laptop Charger           14        ₹23,808.00
+2    Webcam                   7         ₹21,226.00
+3    Laptop Charger 65W       7         ₹19,922.00
+4    Wireless Mouse Gaming    9         ₹9,387.00
+
+TOP 5 CUSTOMERS
+--------------------------------------------
+Rank Customer ID    Total Spent    Orders
+1    C019           ₹    19,922.00  1
+2    C004           ₹    12,312.00  1
+3    C001           ₹    11,574.00  1
+4    C022           ₹    11,496.00  1
+5    C013           ₹     9,652.00  1
+
+DAILY SALES TREND
+--------------------------------------------
+Date        Revenue        Txns    Customers
+2024-12-03  ₹    29,574.00  2       2
+2024-12-07  ₹    20,883.00  2       2
+2024-12-11  ₹    12,312.00  1       1
+2024-12-14  ₹    11,574.00  1       1
+
+PRODUCT PERFORMANCE ANALYSIS
+--------------------------------------------
+Best Selling Day: 2024-12-03
+Low Performing Products:
+
+Average Transaction Value per Region:
+ - East: ₹12,390.50
+
+API ENRICHMENT SUMMARY
+--------------------------------------------
+Total Products Enriched: 6
+Success Rate: 0.00%
+Failed Products:
+ - Laptop Charger
+ - Webcam
+ - Wireless Mouse Gaming
+ - Laptop Charger
+ - Laptop Charger 65W
+ - Webcam
