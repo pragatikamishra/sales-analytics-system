@@ -1,5 +1,7 @@
+# main.py
+
 import os
-from utils.file_handler import (read_sales_data, parse_transactions, validate_and_filter)
+from utils.file_handler import read_sales_data, parse_transactions, validate_and_filter
 from utils.data_processor import (
     calculate_total_revenue,
     region_wise_sales,
@@ -21,11 +23,11 @@ def main():
     print("="*40)
     print("       SALES ANALYTICS SYSTEM")
     print("="*40)
-    
+
     try:
-        
+        # -----------------------------
         # 1. Read Sales Data
-        
+        # -----------------------------
         print("\n[1/10] Reading sales data...")
         filename = "data/sales_data.txt"
         raw_data = read_sales_data(filename, file_encoder="utf-8")
@@ -34,15 +36,16 @@ def main():
             return
         print(f"✓ Successfully read {len(raw_data)} transactions")
 
-       
+        # -----------------------------
         # 2. Parse Transactions
-       
+        # -----------------------------
         print("\n[2/10] Parsing and cleaning data...")
         transactions = parse_transactions(raw_data)
         print(f"✓ Parsed {len(transactions)} records")
 
+        # -----------------------------
         # 3. Display Filter Options
-
+        # -----------------------------
         regions = sorted(set(t["Region"] for t in transactions))
         amounts = [t["Quantity"] * t["UnitPrice"] for t in transactions]
         min_amt, max_amt = min(amounts), max(amounts)
@@ -61,9 +64,9 @@ def main():
             min_amount_filter = float(min_amount_input) if min_amount_input else None
             max_amount_filter = float(max_amount_input) if max_amount_input else None
 
-        
+        # -----------------------------
         # 4. Validate and Filter Transactions
-       
+        # -----------------------------
         print("\n[4/10] Validating transactions...")
         valid_tx, invalid_count, filter_summary = validate_and_filter(
             transactions,
@@ -73,9 +76,14 @@ def main():
         )
         print(f"✓ Valid: {filter_summary['final_count']} | Invalid: {filter_summary['invalid']}")
 
-    
+
+        if not valid_tx:
+            print("✗ No valid transactions after filtering. Exiting.")
+            return
+
+        # -----------------------------
         # 5. Data Analysis
-      
+        # -----------------------------
         print("\n[5/10] Analyzing sales data...")
         total_revenue = calculate_total_revenue(valid_tx)
         region_stats = region_wise_sales(valid_tx)
@@ -86,34 +94,40 @@ def main():
         low_products = low_performing_products(valid_tx)
         print("✓ Analysis complete")
 
-       
+        # -----------------------------
         # 6. Fetch Products from API
-  
+        # -----------------------------
         print("\n[6/10] Fetching product data from API...")
         api_products = fetch_all_products()
         product_mapping = create_product_mapping(api_products)
         print(f"✓ Fetched {len(api_products)} products")
 
-      
+        # -----------------------------
         # 7. Enrich Sales Data
-
+        # -----------------------------
         print("\n[7/10] Enriching sales data...")
         enriched_tx = enrich_sales_data(valid_tx, product_mapping)
         success_count = sum(1 for t in enriched_tx if t.get("API_Match"))
         success_rate = (success_count / len(valid_tx) * 100) if valid_tx else 0
         print(f"✓ Enriched {success_count}/{len(valid_tx)} transactions ({success_rate:.1f}%)")
 
+        # -----------------------------
         # 8. Save Enriched Data
+        # -----------------------------
+        print("\n[8/10] Saving enriched data...")
         enriched_file = save_enriched_data(enriched_tx, filename="data/enriched_sales_data.txt")
         print(f"✓ Saved to: {enriched_file}")
 
+        # -----------------------------
         # 9. Generate Report
+        # -----------------------------
+        print("\n[9/10] Generating report...")
         report_file = generate_sales_report(enriched_tx, enriched_tx, output_file="output/sales_report.txt")
         print(f"✓ Report saved to: {report_file}")
 
-
+        # -----------------------------
         # 10. Complete
-       
+        # -----------------------------
         print("\n[10/10] Process Complete!")
         print("="*40)
 
