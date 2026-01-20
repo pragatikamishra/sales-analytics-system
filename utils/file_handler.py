@@ -1,3 +1,4 @@
+import csv
 import os
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -9,28 +10,23 @@ os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # READ SALES DATA
 
-def read_sales_data(filename, encoding="utf-8"):
-    data = []
-    file_path = os.path.join(DATA_DIR, filename)
-
-    try:
-        with open(file_path, "r", encoding=encoding, newline="") as file:
-            reader = csv.reader(file, delimiter="|")
-            next(reader, None)  # skip header
-
-            for row in reader:
-                if row and any(field.strip() for field in row):
-                    data.append("|".join(row))
+def read_sales_data(filename,file_encoder): 
+    try: 
+        data = [] 
+        with open(file=filename, mode='r', encoding=file_encoder,newline='\n',) as file: 
+            file_content=csv.reader(file,delimiter='|') 
+            header=next(file_content,None) #skip header 
+            for row in file_content: 
+                if row and any(field.strip() 
+                               for field in row): 
+                                data.append('|'.join(row))
+                                return data 
+    except UnicodeDecodeError: 
+        print(f'{filename} file is not in UTF-8 encoding') 
+        return data 
+    except FileNotFoundError: 
+        print(f'{filename} file does not exist') 
         return data
-
-    except UnicodeDecodeError:
-        print(f"Encoding issue in {filename}")
-        return []
-
-    except FileNotFoundError:
-        print(f"{filename} not found")
-        return []
-
 
 
 # PARSE TRANSACTIONS
